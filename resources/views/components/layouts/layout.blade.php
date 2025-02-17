@@ -9,7 +9,7 @@
     @vite("resources/css/app.css")
 </head>
 <body>
-<x-layouts.logout />
+<x-layouts.header />
 <x-layouts.nav />
 
 <main class="bg-main h-65v">

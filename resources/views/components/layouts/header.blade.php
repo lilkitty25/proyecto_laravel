@@ -1,3 +1,4 @@
+
 <header class="bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg pt-4 pb-4">
     <div class="max-w-7xl mx-auto flex items-center justify-between p-4">
         <!-- Logo -->
@@ -28,3 +29,4 @@
         @endauth
     </div>
 </header>
+
