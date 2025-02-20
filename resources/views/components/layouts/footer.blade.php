@@ -1,5 +1,6 @@
-<footer class="bg-gradient-to-r from-pink-400 via-pink-500 to-red-500 text-neutral-content p-4 shadow-lg mt-4">
-    <aside class="grid-flow-col items-center gap-4 hover:scale-105 transition-all duration-300">
+<footer class="bg-gradient-to-r from-pink-400 via-pink-500 to-red-500 text-neutral-content p-4 shadow-lg">
+
+<aside class="grid-flow-col items-center gap-4 hover:scale-105 transition-all duration-300">
         <svg
             width="36"
             height="36"
