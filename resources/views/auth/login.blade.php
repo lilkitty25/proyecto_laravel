@@ -1,7 +1,9 @@
 <x-layouts.layout>
     <!-- Session Status -->
-    <div class="flex flex-flow justify-center min-h-full bg-gradient-to-r from-pink-100 via-red-100 to-pink-300 py-10">
-        <div class="bg-white p-8 rounded-xl shadow-xl max-w-sm w-full">
+    <div class="flex flex-flow justify-center min-h-screen bg-gradient-to-r from-pink-100 via-red-100 to-pink-300 py-10 sm:py-16 lg:py-20">
+
+        <div class="bg-white p-8 rounded-xl shadow-xl max-w-sm w-full mx-auto sm:max-w-md lg:max-w-lg">
+
             <x-auth-session-status class="mb-4" :status="session('status')" />
 
             <form method="POST" action="{{ route('login') }}">

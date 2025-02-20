@@ -6,31 +6,31 @@
     </div>
 
     <!-- Contador de tiempo -->
-    <div class="mt-8 mb-8">
-        <div class="grid auto-cols-max grid-flow-col gap-5 text-center justify-center">
-            <div class="bg-base-200 rounded-lg text-base-content flex flex-col p-4 shadow-lg">
-                <span id="days" class="countdown font-mono text-5xl text-primary"></span>
+    <div class="mt-8 mb-8 mx-4 sm:mx-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center justify-center">
+            <div class="bg-base-200 rounded-lg text-base-content flex flex-col p-4 shadow-lg items-center">
+                <span id="days" class="countdown font-mono text-4xl sm:text-5xl text-primary"></span>
                 <p class="text-xl font-semibold">Days</p>
             </div>
-            <div class="bg-base-200 rounded-lg text-base-content flex flex-col p-4 shadow-lg">
-                <span id="hours" class="countdown font-mono text-5xl text-primary"></span>
+            <div class="bg-base-200 rounded-lg text-base-content flex flex-col p-4 shadow-lg items-center">
+                <span id="hours" class="countdown font-mono text-4xl sm:text-5xl text-primary"></span>
                 <p class="text-xl font-semibold">Hours</p>
             </div>
-            <div class="bg-base-200 rounded-lg text-base-content flex flex-col p-4 shadow-lg">
-                <span id="minutes" class="countdown font-mono text-5xl text-primary"></span>
+            <div class="bg-base-200 rounded-lg text-base-content flex flex-col p-4 shadow-lg items-center">
+                <span id="minutes" class="countdown font-mono text-4xl sm:text-5xl text-primary"></span>
                 <p class="text-xl font-semibold">Minutes</p>
             </div>
-            <div class="bg-base-200 rounded-lg text-base-content flex flex-col p-4 shadow-lg">
-                <span id="seconds" class="countdown font-mono text-5xl text-primary"></span>
+            <div class="bg-base-200 rounded-lg text-base-content flex flex-col p-4 shadow-lg items-center">
+                <span id="seconds" class="countdown font-mono text-4xl sm:text-5xl text-primary"></span>
                 <p class="text-xl font-semibold">Seconds</p>
             </div>
         </div>
     </div>
 
     <!-- Descripción del Proyecto - Tres cards en fila con Laravel, DaisyUI y Breeze -->
-    <div class="flex justify-center gap-8 my-8">
+    <div class="flex flex-wrap justify-center gap-8 my-8 mx-4 sm:mx-8">
         <!-- Laravel Card -->
-        <div class="card glass w-96">
+        <div class="card glass w-full sm:w-96">
             <figure>
                 <img src="img/laravel.jpg" alt="Laravel" />
             </figure>
@@ -44,7 +44,7 @@
         </div>
 
         <!-- DaisyUI Card -->
-        <div class="card glass w-96">
+        <div class="card glass w-full sm:w-96">
             <figure>
                 <img src="img/daisy.webp" alt="DaisyUI" />
             </figure>
@@ -58,7 +58,7 @@
         </div>
 
         <!-- Breeze Card -->
-        <div class="card glass w-96">
+        <div class="card glass w-full sm:w-96">
             <figure>
                 <img src="img/breeze-register.png" alt="Breeze" />
             </figure>
@@ -71,7 +71,6 @@
             </div>
         </div>
     </div>
-
 
     <script>
         // Establecer la fecha objetivo: 14 de febrero de 2025 a las 00:00
