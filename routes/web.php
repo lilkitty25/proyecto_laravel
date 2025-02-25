@@ -28,5 +28,9 @@ Route::post('/logout', function () {
     return redirect('/login');  // Redirige al usuario a la página de login
 })->name('logout');
 
+//Alumnos de views
+//Route::resource('alumnos', AlumnoController::class);
+
+
 // Cargar rutas de autenticación
 require __DIR__.'/auth.php';

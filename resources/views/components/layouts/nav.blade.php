@@ -3,6 +3,7 @@
         <a href="#" class="btn btn-sm btn-primary">About</a>
         <a href="#" class="btn btn-secondary">Home</a>
         <a href="#" class="btn btn-neutral">Contact</a>
+
         <a href="{{ route('alumnos') }}" class="btn btn-primary">Alumnos</a>
         <a href="#" class="btn btn-active btn-accent">News</a>
     </nav>

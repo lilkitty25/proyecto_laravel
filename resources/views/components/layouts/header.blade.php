@@ -1,24 +1,13 @@
-<header class="bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg pt-4 pb-4">
-    <div class="max-w-7xl mx-auto flex items-center justify-between p-4">
+<header class="bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg p-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
         <!-- Logo -->
         <img class="h-12 md:h-16 rounded-full transition-all duration-300 transform hover:scale-105"
              src="{{ asset('img/logo1.png') }}" alt="logo">
 
-        <!-- Título -->
+        <!-- Título (visible solo en pantallas grandes) -->
         <h1 class="text-4xl font-semibold text-white hover:text-gray-300 transition-all duration-300 hidden md:block">
             Welcome to Kawaii<3
         </h1>
-
-        <!-- Menú hamburguesa para móviles -->
-        <div class="flex items-center md:hidden">
-            <!-- Input checkbox para controlar el estado del menú -->
-            <input type="checkbox" id="menu-toggle" class="hidden peer" />
-            <label for="menu-toggle" class="cursor-pointer text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </label>
-        </div>
 
         <!-- Menú en dispositivos grandes -->
         <div class="hidden md:flex items-center space-x-4">
@@ -40,11 +29,46 @@
                 </form>
             @endauth
         </div>
+
+        <!-- Menú hamburguesa para dispositivos móviles -->
+        <div class="md:hidden">
+            <!-- Checkbox oculto para controlar la visibilidad del menú -->
+            <input type="checkbox" id="menu-toggler" class="peer hidden">
+
+            <!-- Ícono de hamburguesa -->
+            <label for="menu-toggler" class="text-3xl cursor-pointer text-white">
+                &#9778;
+            </label>
+
+            <!-- Menú desplegable para móviles -->
+            <div class="hidden absolute bg-white right-0 p-4 rounded-xl peer-checked:flex flex-col space-y-2 shadow-lg w-48">
+                @guest
+                    <!-- Opciones para usuarios no autenticados -->
+                    <form action="" class="flex flex-col space-y-2">
+                        <a href="{{ route('login') }}" class="btn btn-sm btn-primary btn-outline text-white">Login</a>
+                        <a href="{{ route('register') }}" class="btn btn-sm btn-secondary text-white">Register</a>
+                    </form>
+                @endguest
+                @auth
+                    <!-- Nombre del usuario y opción de logout -->
+                    <span class="text-black font-semibold">{{ auth()->user()->name }}</span>
+                    <form action="{{ route('logout') }}" method="post">
+                        @csrf
+                        <input class="btn btn-sm btn-secondary text-white" type="submit" value="Logout">
+                    </form>
+                @endauth
+
+                <!-- Enlaces adicionales -->
+                <a href="#about" class="text-black hover:text-gray-500">About</a>
+                <a href="#services" class="text-black hover:text-gray-500">Services</a>
+                <a href="#contact" class="text-black hover:text-gray-500">Contact</a>
+            </div>
+        </div>
     </div>
 
-    <!-- Menú desplegable para móviles (se muestra cuando el checkbox está marcado) -->
+    <!-- Menú desplegable para móviles (para usuarios que no están autenticados) -->
     <div class="peer-checked:block hidden bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg">
-        <div class="flex flex-col items-center p-4">
+        <div class="flex flex-col items-center p-4 space-y-2">
             @guest
                 <a href="{{ route('login') }}" class="btn btn-sm btn-primary w-full mb-2 hover:bg-primary-focus transition-all duration-300">
                     Login
@@ -60,6 +84,10 @@
                     <input class="btn btn-sm btn-secondary w-full mb-2 hover:bg-secondary-focus transition-all duration-300" type="submit" value="Logout">
                 </form>
             @endauth
+            <!-- Otros enlaces del menú -->
+            <a href="#about" class="text-white mb-2 hover:text-gray-300 transition-all duration-300">About</a>
+            <a href="#services" class="text-white mb-2 hover:text-gray-300 transition-all duration-300">Services</a>
+            <a href="#contact" class="text-white mb-2 hover:text-gray-300 transition-all duration-300">Contact</a>
         </div>
     </div>
 </header>
