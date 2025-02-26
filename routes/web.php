@@ -5,6 +5,7 @@ use App\Http\Controllers\AlumnoController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
+
 Route::get('/', function () {
     return view('main');
 });
@@ -21,6 +22,7 @@ Route::middleware('auth')->group(function () {
 
 // Ruta para alumnos
 Route::get('/alumnos', [AlumnoController::class, 'index'])->name('alumnos');
+Route::resource('alumnos', AlumnoController::class);
 
 // Ruta para cerrar sesión
 Route::post('/logout', function () {
