@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('alumnos', function (Blueprint $table) {
+        Schema::create('idiomas', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            $table->string('email');
-            $table->string('edad');
+            $table->string('idioma');
+            $table->foreignId("alumno_id")->constrained()
+                ->onDelete("cascade")
+                ->onUpdate("cascade");
+            $table->enum("nivel",["Alto","Medio","Básico"]);
+            $table->enum("titulo",["A1","A2","B1","B2","C1","C2"]);
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('alumnos');
+        Schema::dropIfExists('idiomas');
     }
 };
