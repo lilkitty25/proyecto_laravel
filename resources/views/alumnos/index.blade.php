@@ -18,10 +18,8 @@
                 <thead class="bg-purple-600 text-white">
                 <tr>
                     <th class="px-6 py-4 text-lg font-semibold bg-purple-600 text-white">Nombre</th>
-                    <th class="px-6 py-4 text-lg font-semibold bg-purple-600 text-white">Apellido</th>
-                    <th class="px-6 py-4 text-lg font-semibold bg-purple-600 text-white">Fecha de Nacimiento</th>
                     <th class="px-6 py-4 text-lg font-semibold bg-purple-600 text-white">Correo Electrónico</th>
-                    <th class="px-6 py-4 text-lg font-semibold bg-purple-600 text-white">Fecha de Inscripción</th>
+                    <th class="px-6 py-4 text-lg font-semibold bg-purple-600 text-white">DNI</th>
                     <th class="px-6 py-4 text-lg font-semibold bg-purple-600 text-white">Acciones</th>
                 </tr>
                 </thead>
@@ -29,10 +27,8 @@
                 @foreach($alumnos as $alumno)
                     <tr class="hover:bg-purple-100 transition-colors duration-300">
                         <td class="px-6 py-4">{{ $alumno->nombre }}</td>
-                        <td class="px-6 py-4">{{ $alumno->apellido }}</td>
-                        <td class="px-6 py-4">{{ $alumno->fecha_nacimiento }}</td>
-                        <td class="px-6 py-4">{{ $alumno->correo_electronico }}</td>
-                        <td class="px-6 py-4">{{ $alumno->fecha_inscripcion }}</td>
+                        <td class="px-6 py-4">{{ $alumno->email }}</td>
+                        <td class="px-6 py-4">{{ $alumno->dni }}</td>
                         <td class="px-6 py-4 flex space-x-2">
                             <!-- Botón de editar con icono SVG -->
                             <a href="{{ route('alumnos.edit', $alumno->id) }}" class="btn bg-purple-600 text-white hover:bg-purple-700 rounded px-4 py-2 shadow-md transition-all duration-300">
@@ -60,78 +56,21 @@
                 @endforeach
                 </tbody>
             </table>
-
-    @if (session("mensaje"))
-        <div role="alert" class="alert alert-success bg-gradient-to-r from-pink-500 via-purple-500 to-pink-400 text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>{{ session('mensaje') }}</span>
-
         </div>
-    @endif
 
-    <div class="p-2 flex flex-row justify-start items-center space-x-2">
-        <a href="{{ route('alumnos.create') }}" class="btn btn-sm bg-gradient-to-r from-pink-400 to-purple-500 text-white hover:from-pink-500 hover:to-purple-600">Crear Alumno</a>
-        <a href="{{ route('home') }}" class="btn btn-sm bg-gradient-to-r from-pink-400 to-purple-500 text-white hover:from-pink-500 hover:to-purple-600">Volver</a>
-    </div>
+        <script>
+            function confirmarDelete(id) {
+                const formulario = document.getElementById('formulario' + id);
 
-
-    <script>
-        function confirmarDelete(id) {
-            const formulario = document.getElementById('formulario' + id);
-
-            if (confirm('¿Estás seguro de que deseas eliminar este alumno?')) {
-                formulario.submit();
+                if (confirm('¿Estás seguro de que deseas eliminar este alumno?')) {
+                    formulario.submit();
+                }
             }
+        </script>
 
-    <div class="max-h-full overflow-x-auto mt-4">
-        <table class="table table-xs table-pin-rows table-pin-cols">
-            <thead class="bg-gradient-to-r from-pink-400 to-purple-500 text-white">
-            <tr>
-                @foreach($campos as $campo)
-                    <th>{{ $campo }}</th>
-                @endforeach
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($filas as $fila)
-                <tr class="border-b border-gray-200 hover:bg-gradient-to-r from-pink-100 to-purple-100">
-                    @foreach($campos as $campo)
-                        <td class="p-2">{{ $fila->$campo }}</td>
-                    @endforeach
-
-                    <td>
-                        <!-- Edit button -->
-                        <a href="{{ route('alumnos.edit', $fila->id) }}" aria-label="Editar alumno {{ $fila->id }}" class="text-purple-500 hover:text-pink-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hover:bg-purple-100 hover:rounded-full p-1">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                            </svg>
-                        </a>
-                    </td>
-
-                    <td>
-                        <!-- Delete button -->
-                        <form id="formulario{{ $fila->id }}" action="{{ route('alumnos.destroy', $fila->id) }}" method="POST" onsubmit="event.preventDefault(); confirmDelete({{ $fila->id }})">
-                            @method('DELETE')
-                            @csrf
-                            <button type="submit" style="display: none;"></button>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 hover:bg-red-400 hover:text-white hover:rounded-full p-1">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
-                            </svg>
-                        </form>
-                    </td>
-
-                    <td>
-                        <a href="{{ route('alumnos.show', $fila->id) }}" class="text-pink-500 hover:text-purple-500" aria-label="Ver alumno {{ $fila->id }}">Ver</a>
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+        <div class="p-2 flex flex-row justify-start items-center space-x-2">
+            <a href="{{ route('alumnos.create') }}" class="btn btn-sm bg-gradient-to-r from-pink-400 to-purple-500 text-white hover:from-pink-500 hover:to-purple-600">Crear Alumno</a>
+            <a href="{{ route('home') }}" class="btn btn-sm bg-gradient-to-r from-pink-400 to-purple-500 text-white hover:from-pink-500 hover:to-purple-600">Volver</a>
+        </div>
     </div>
-
 </x-layouts.layout>

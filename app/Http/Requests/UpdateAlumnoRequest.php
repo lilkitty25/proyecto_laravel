@@ -7,12 +7,11 @@ use Illuminate\Foundation\Http\FormRequest;
 class UpdateAlumnoRequest extends FormRequest
 {
     /**
-<<<<<<< Updated upstream
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return true; // Cambiar según lógica de autorización, si es necesario
     }
 
     /**
@@ -23,41 +22,33 @@ class UpdateAlumnoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => 'required|min:3|max:50',
-            //
+            // Validación del campo 'nombre'
+            'nombre' => 'required|string|min:3|max:50',  // Ajusté las reglas para incluir min y max
+
+            // Validación del campo 'email'
+            'email' => 'required|email|unique:alumnos,email,' . $this->route('alumno'),
+
+            // Validación del campo 'edad'
+            'edad' => 'required|string|max:3',  // Limita a 3 caracteres para edad
         ];
-    }
-    public function messages(): array{
-        return [
-            "nombre.required" => "El campo nombre es obligatorio!!!!!",
-=======
-     * Autoriza la solicitud.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true; // Cambiar según lógica de autorización, si es necesario
     }
 
     /**
-     * Obtiene las reglas de validación para la solicitud.
+     * Obtener los mensajes personalizados de validación.
      *
      * @return array
      */
-    public function rules()
+    public function messages(): array
     {
         return [
-            // Validación del campo 'nombre'
-            'nombre' => 'required|string|max:255',
-
-            // Validación del campo 'email'
-            // El 'unique' tiene en cuenta que el email debe ser único, excepto para el registro actual
-            'email' => 'required|email|unique:alumnos,email,' . $this->route('alumno'),
-
-            // Validación del campo 'edad' (puede ser un string, limitando su longitud)
-            'edad' => 'required|string|max:3',  // Limita a 3 caracteres
->>>>>>> Stashed changes
+            'nombre.required' => 'El campo nombre es obligatorio.',
+            'nombre.min' => 'El nombre debe tener al menos 3 caracteres.',
+            'nombre.max' => 'El nombre no puede exceder los 50 caracteres.',
+            'email.required' => 'El campo email es obligatorio.',
+            'email.email' => 'El formato del correo electrónico es inválido.',
+            'email.unique' => 'Este email ya está registrado.',
+            'edad.required' => 'El campo edad es obligatorio.',
+            'edad.max' => 'La edad no puede tener más de 3 caracteres.',
         ];
     }
 }

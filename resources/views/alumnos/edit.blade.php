@@ -18,21 +18,21 @@
             </div>
 
             <div class="mb-4">
-<<<<<<< Updated upstream
+
                 <label for="apellido" class="block text-lg">Apellido</label>
                 <input type="text" id="apellido" name="apellido" value="{{ old('apellido', $alumno->apellido) }}" class="w-full p-2 border rounded-lg" required>
                 @error('apellido')
-=======
+
                 <label for="email" class="block text-lg">Correo Electrónico</label>
                 <input type="email" id="email" name="email" value="{{ old('email', $alumno->email) }}" class="w-full p-2 border rounded-lg" required>
                 @error('email')
->>>>>>> Stashed changes
+
                 <p class="text-red-500 text-sm">{{ $message }}</p>
                 @enderror
             </div>
 
             <div class="mb-4">
-<<<<<<< Updated upstream
+
                 <label for="fecha_nacimiento" class="block text-lg">Fecha de Nacimiento</label>
                 <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ old('fecha_nacimiento', $alumno->fecha_nacimiento) }}" class="w-full p-2 border rounded-lg" required>
                 @error('fecha_nacimiento')
@@ -52,11 +52,11 @@
                 <label for="fecha_inscripcion" class="block text-lg">Fecha de Inscripción</label>
                 <input type="date" id="fecha_inscripcion" name="fecha_inscripcion" value="{{ old('fecha_inscripcion', $alumno->fecha_inscripcion) }}" class="w-full p-2 border rounded-lg" required>
                 @error('fecha_inscripcion')
-=======
+
                 <label for="edad" class="block text-lg">Edad</label>
                 <input type="text" id="edad" name="edad" value="{{ old('edad', $alumno->edad) }}" class="w-full p-2 border rounded-lg" required>
                 @error('edad')
->>>>>>> Stashed changes
+
                 <p class="text-red-500 text-sm">{{ $message }}</p>
                 @enderror
             </div>
