@@ -15,7 +15,7 @@ class Alumno extends Model
     protected $primaryKey = 'id';
     protected $timestamp = true;
 
-    protected $fillable = ["nombre","email","edad"];
+    protected $fillable = ["nombre","email","dni"];
     // Relación con la tabla 'idiomas'
     public function idiomas()
     {

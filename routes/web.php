@@ -28,7 +28,7 @@ Route::get('/home', function () {
 
 // Ruta para alumnos
 Route::get('/alumnos', [AlumnoController::class, 'index'])->name('alumnos');
-Route::resource('alumnos', AlumnoController::class);
+Route::resource('alumnos', AlumnoController::class)->middleware(['auth', 'verified']);
 
 // Ruta para cambiar idioma
 Route::get('/language/{lang}', [LanguageController::class, 'switchLanguage'])->name('language.switch');

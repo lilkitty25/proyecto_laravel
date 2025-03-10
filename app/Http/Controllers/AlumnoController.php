@@ -10,9 +10,7 @@ use Illuminate\Support\Facades\DB; // Import DB for transactions
 
 class AlumnoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $columns = Schema::getColumnListing("alumnos");
@@ -36,10 +34,20 @@ class AlumnoController extends Controller
      */
     public function store(StoreAlumnoRequest $request)
     {
+
+
         DB::transaction(function () use ($request) {
-            $data = $request->only('nombre', 'email', 'edad');
+
+            $data = $request->only('nombre', 'email', 'dni');
+
+            $alumno= new Alumno($data);
+            
+
+
+            $alumno->save();
 
             $alumno = Alumno::create($data);
+
 
             if ($request->has('idiomas')) {
                 $idiomas = collect($request->input('idiomas'));

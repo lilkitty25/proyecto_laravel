@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -15,12 +14,20 @@ class ValidateHeaderMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if($request->headers->get('Accept') !== 'application/json')
-        return response()->json([
-            'errors' => [
-                "status" => 500,
-                "title" => "Error en la base de datos",
-                "detail" => "La base de datos no responde"
-            ]);
+        // Check if the 'Accept' header is present and is 'application/json'
+        if ($request->headers->get('Accept') !== 'application/vnd.api+json') {
+            // Return a 406 Not Acceptable response with an error message
+            return response()->json([
+                'errors' => [
+                    "status" => 406,
+                    "title" => "Invalid Accept Header",
+                    "detail" => "The Accept header must be 'application/json'."
+                ]
+            ], 406);
+        }
+
+        // If the header is valid, proceed with the request
+        return $next($request);
     }
 }
+

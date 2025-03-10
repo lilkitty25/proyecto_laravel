@@ -15,8 +15,10 @@
                             <x-text-input id="email" class="block mt-1 w-full border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500" type="email" name="email" />
                         </div>
                         <div>
-                            <x-input-label for="edad" value="Edad" />
-                            <x-text-input id="edad" class="block mt-1 w-full border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500" type="number" name="edad" />
+                            <x-input-label for="dni" value="Dni" />
+                            <x-text-input id="dni"
+                                          class="block mt-1 w-full border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500"
+                                          type="text" name="dni" />
                         </div>
                         <div class="flex flex-row justify-between p-3">
                             <button class="btn bg-gradient-to-r from-pink-400 to-purple-500 text-white hover:bg-gradient-to-l hover:from-purple-500 hover:to-pink-400" type="submit">Guardar</button>

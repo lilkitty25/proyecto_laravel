@@ -6,12 +6,10 @@
                 {{ session('success') }}
             </div>
         @endif
-
-        <!-- Botón para agregar nuevo alumno -->
-        <a href="{{ route('alumnos.create') }}" class="btn bg-purple-600 text-white hover:bg-purple-700 mb-4 px-6 py-2 rounded-lg shadow-lg transition-all duration-300">
-            Agregar Nuevo Alumno
-        </a>
-
+        <div class="p-2 flex flex-row justify-start items-center space-x-2">
+            <a href="{{ route('alumnos.create') }}" class="btn btn-sm bg-gradient-to-r from-pink-400 to-purple-500 text-white hover:from-pink-500 hover:to-purple-600">Crear Alumno</a>
+            <a href="{{ route('home') }}" class="btn btn-sm bg-gradient-to-r from-pink-400 to-purple-500 text-white hover:from-pink-500 hover:to-purple-600">Volver</a>
+        </div>
         <div class="overflow-x-auto mt-6">
             <!-- Tabla Responsiva -->
             <table class="table table-xs table-pin-rows table-pin-cols border-separate border-spacing-2 rounded-lg shadow-xl table-auto w-full text-gray-900 bg-gradient-to-r from-purple-300 via-pink-200 to-purple-400">
@@ -68,9 +66,6 @@
             }
         </script>
 
-        <div class="p-2 flex flex-row justify-start items-center space-x-2">
-            <a href="{{ route('alumnos.create') }}" class="btn btn-sm bg-gradient-to-r from-pink-400 to-purple-500 text-white hover:from-pink-500 hover:to-purple-600">Crear Alumno</a>
-            <a href="{{ route('home') }}" class="btn btn-sm bg-gradient-to-r from-pink-400 to-purple-500 text-white hover:from-pink-500 hover:to-purple-600">Volver</a>
-        </div>
+
     </div>
 </x-layouts.layout>
