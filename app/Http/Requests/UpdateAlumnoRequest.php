@@ -23,13 +23,15 @@ class UpdateAlumnoRequest extends FormRequest
     {
         return [
             // Validación del campo 'nombre'
-            'nombre' => 'required|string|min:3|max:50',  // Ajusté las reglas para incluir min y max
-
-            // Validación del campo 'email'
-            'email' => 'required|email|unique:alumnos,email,' . $this->route('alumno'),
-
-            // Validación del campo 'edad'
-            'edad' => 'required|string|max:3',  // Limita a 3 caracteres para edad
+            'nombre' => 'required|string|min:3|max:50',
+            'email' => 'required|email|unique:alumnos,email,' . $this->route('alumno')->id,
+            'dni' => 'required|string|max:9',
+            'idiomas' => 'nullable|array',
+            'idiomas.*' => 'string',
+            'nivel' => 'nullable|array',
+            'nivel.*' => 'nullable|string|in:A1,A2,B1,B2,C1,C2',
+            'titulo' => 'nullable|array',
+            'titulo.*' => 'nullable|string|max:100'
         ];
     }
 
@@ -47,8 +49,11 @@ class UpdateAlumnoRequest extends FormRequest
             'email.required' => 'El campo email es obligatorio.',
             'email.email' => 'El formato del correo electrónico es inválido.',
             'email.unique' => 'Este email ya está registrado.',
-            'edad.required' => 'El campo edad es obligatorio.',
-            'edad.max' => 'La edad no puede tener más de 3 caracteres.',
+            'dni.required' => 'El campo DNI es obligatorio.',
+            'dni.max' => 'El DNI no puede tener más de 9 caracteres.',
+            'idiomas.array' => 'El formato de idiomas no es válido.',
+            'nivel.*.in' => 'El nivel debe ser uno de los siguientes: A1, A2, B1, B2, C1, C2',
+            'titulo.*.max' => 'El título no puede exceder los 100 caracteres.'
         ];
     }
 }

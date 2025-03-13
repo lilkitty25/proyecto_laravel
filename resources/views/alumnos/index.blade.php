@@ -18,16 +18,33 @@
                     <th class="px-6 py-4 text-lg font-semibold bg-purple-600 text-white">Nombre</th>
                     <th class="px-6 py-4 text-lg font-semibold bg-purple-600 text-white">Correo Electrónico</th>
                     <th class="px-6 py-4 text-lg font-semibold bg-purple-600 text-white">DNI</th>
+                    <th class="px-6 py-4 text-lg font-semibold bg-purple-600 text-white">Idiomas</th>
                     <th class="px-6 py-4 text-lg font-semibold bg-purple-600 text-white">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($alumnos as $alumno)
-                    <tr class="hover:bg-purple-100 transition-colors duration-300">
-                        <td class="px-6 py-4">{{ $alumno->nombre }}</td>
-                        <td class="px-6 py-4">{{ $alumno->email }}</td>
-                        <td class="px-6 py-4">{{ $alumno->dni }}</td>
-                        <td class="px-6 py-4 flex space-x-2">
+                    <tr class="hover:[background-color:#E749A1] hover:bg-opacity-20 transition-colors duration-300">
+                        <td class="px-6 py-4 text-purple-800 text-sm font-semibold">{{ $alumno->nombre }}</td>
+                        <td class="px-6 py-4 text-purple-800 text-sm font-semibold">{{ $alumno->email }}</td>
+                        <td class="px-6 py-4 text-purple-800 text-sm font-semibold">{{ $alumno->dni }}</td>
+                        <td class="px-6 py-4 text-purple-800 text-sm font-semibold">
+                            @if($alumno->idiomas->count() > 0)
+                                <div class="flex flex-col gap-1">
+                                @foreach($alumno->idiomas as $idioma)
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-800">
+                                        {{ $idioma->idioma }} ({{ $idioma->nivel }})
+                                        @if($idioma->titulo)
+                                            <span class="ml-1 text-purple-600">✓</span>
+                                        @endif
+                                    </span>
+                                @endforeach
+                                </div>
+                            @else
+                                <span class="text-gray-500 italic font-semibold">Sin idiomas</span>
+                            @endif
+                        </td>
+                        <td class="px-6 py-4 text-purple-800 text-sm font-semibold flex space-x-2">
                             <!-- Botón de editar con icono SVG -->
                             <a href="{{ route('alumnos.edit', $alumno->id) }}" class="btn bg-purple-600 text-white hover:bg-purple-700 rounded px-4 py-2 shadow-md transition-all duration-300">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

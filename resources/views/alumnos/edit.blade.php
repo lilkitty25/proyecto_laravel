@@ -31,6 +31,47 @@
                 @enderror
             </div>
 
+            <!-- Sección de Idiomas -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-3 text-gradient bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-500">Idiomas</h3>
+                
+                @foreach($idiomas_disponibles as $idioma)
+                <div class="mb-4 p-4 border rounded-lg">
+                    <div class="flex items-center mb-2">
+                        <input type="checkbox" 
+                               id="idioma_{{ $idioma }}" 
+                               name="idiomas[]" 
+                               value="{{ $idioma }}"
+                               {{ $alumno->idiomas->contains('idioma', $idioma) ? 'checked' : '' }}
+                               class="mr-2">
+                        <label for="idioma_{{ $idioma }}" class="text-sm">{{ $idioma }}</label>
+                    </div>
+                    
+                    <div class="ml-6 space-y-2" id="detalles_{{ $idioma }}">
+                        <div>
+                            <label class="block text-sm mb-1">Nivel:</label>
+                            <select name="nivel[{{ $idioma }}]" class="w-full p-2 border rounded text-sm">
+                                @foreach($niveles as $nivel)
+                                    <option value="{{ $nivel }}" 
+                                        {{ $alumno->idiomas->where('idioma', $idioma)->first()?->nivel == $nivel ? 'selected' : '' }}>
+                                        {{ $nivel }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm mb-1">Título:</label>
+                            <input type="text" 
+                                   name="titulo[{{ $idioma }}]" 
+                                   value="{{ $alumno->idiomas->where('idioma', $idioma)->first()?->titulo }}"
+                                   class="w-full p-2 border rounded text-sm">
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
             <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white hover:bg-gradient-to-r hover:from-purple-700 hover:to-pink-600 px-6 py-2 rounded-lg shadow-lg text-sm">
                 Actualizar Alumno
             </button>

@@ -16,7 +16,7 @@ class AlumnoController extends Controller
         $columns = Schema::getColumnListing("alumnos");
         $exclude = ["created_at", "updated_at"];
         $columns = array_diff($columns, $exclude);
-        $alumnos = Alumno::select($columns)->get();
+        $alumnos = Alumno::with('idiomas')->select($columns)->get();
 
         return view('alumnos.index', compact('alumnos', 'columns'));
     }
@@ -79,7 +79,9 @@ class AlumnoController extends Controller
      */
     public function edit(Alumno $alumno)
     {
-        return view('alumnos.edit', compact('alumno'));
+        $idiomas_disponibles = ['Inglés', 'Francés', 'Alemán', 'Italiano', 'Portugués', 'Chino'];
+        $niveles = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+        return view('alumnos.edit', compact('alumno', 'idiomas_disponibles', 'niveles'));
     }
 
     /**
@@ -87,32 +89,46 @@ class AlumnoController extends Controller
      */
     public function update(UpdateAlumnoRequest $request, Alumno $alumno)
     {
-        DB::transaction(function () use ($request, $alumno) {
-            $data = $request->only("nombre", "email", "edad");
-            $alumno->update($data);
+        try {
+            DB::transaction(function () use ($request, $alumno) {
+                // Actualizar datos básicos del alumno
+                $alumno->update($request->only(['nombre', 'email', 'dni']));
 
-            $idiomas = $request->input("idiomas");
-            $alumnoIdiomas = $alumno->idiomas->pluck('idioma')->toArray();
+                // Manejar idiomas
+                if ($request->has('idiomas')) {
+                    // Obtener los idiomas actuales y nuevos
+                    $idiomas = $request->input('idiomas', []);
+                    
+                    // Eliminar idiomas que ya no están en la lista
+                    $alumno->idiomas()->whereNotIn('idioma', $idiomas)->delete();
 
-            $idiomasParaEliminar = array_diff($alumnoIdiomas, $idiomas);
-            if ($idiomasParaEliminar) {
-                $alumno->idiomas()->whereIn('idioma', $idiomasParaEliminar)->delete();
-            }
+                    // Actualizar o crear idiomas
+                    foreach ($idiomas as $idioma) {
+                        $alumno->idiomas()->updateOrCreate(
+                            ['idioma' => $idioma],
+                            [
+                                'nivel' => $request->input("nivel.{$idioma}"),
+                                'titulo' => $request->input("titulo.{$idioma}")
+                            ]
+                        );
+                    }
+                } else {
+                    // Si no hay idiomas seleccionados, eliminar todos
+                    $alumno->idiomas()->delete();
+                }
 
-            collect($idiomas)->each(function ($idioma) use ($request, $alumno) {
-                $alumno->idiomas()->updateOrCreate(
-                    ['idioma' => $idioma],
-                    [
-                        'nivel' => $request->input("niveles")[$idioma] ?? null,
-                        'titulo' => $request->input("titulos")[$idioma] ?? null,
-                    ]
-                );
+                session()->flash('mensaje', 'Alumno actualizado correctamente');
             });
 
-            session()->flash("mensaje", "Alumno actualizado");
-        });
-
-        return redirect()->route('alumnos.index');
+            return redirect()->route('alumnos.index');
+        } catch (\Exception $e) {
+            // Log del error para debugging
+            \Log::error('Error actualizando alumno: ' . $e->getMessage());
+            
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'Error al actualizar el alumno. Por favor, inténtalo de nuevo.']);
+        }
     }
 
     /**
