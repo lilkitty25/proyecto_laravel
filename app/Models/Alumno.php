@@ -7,20 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Alumno extends Model
 {
-    /** @use HasFactory<\Database\Factories\AlumnoFactory> */
     use HasFactory;
 
-
     protected $table = 'alumnos';
-    protected $primaryKey = 'id';
-    protected $timestamp = true;
+    protected $fillable = ['nombre', 'email', 'dni'];
 
-    protected $fillable = ["nombre","email","dni"];
     // Relación con la tabla 'idiomas'
     public function idiomas()
     {
         return $this->hasMany(Idioma::class);
     }
-
-
 }

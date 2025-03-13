@@ -29,20 +29,21 @@
                         <td class="px-6 py-4 text-purple-800 text-sm font-semibold">{{ $alumno->email }}</td>
                         <td class="px-6 py-4 text-purple-800 text-sm font-semibold">{{ $alumno->dni }}</td>
                         <td class="px-6 py-4 text-purple-800 text-sm font-semibold">
-                            @if($alumno->idiomas->count() > 0)
-                                <div class="flex flex-col gap-1">
-                                @foreach($alumno->idiomas as $idioma)
+                            @forelse($alumno->idiomas as $idioma)
+                                <div class="flex flex-wrap gap-1">
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-800">
-                                        {{ $idioma->idioma }} ({{ $idioma->nivel }})
+                                        {{ $idioma->idioma }} 
+                                        @if($idioma->nivel)
+                                            <span class="ml-1">({{ $idioma->nivel }})</span>
+                                        @endif
                                         @if($idioma->titulo)
                                             <span class="ml-1 text-purple-600">✓</span>
                                         @endif
                                     </span>
-                                @endforeach
                                 </div>
-                            @else
+                            @empty
                                 <span class="text-gray-500 italic font-semibold">Sin idiomas</span>
-                            @endif
+                            @endforelse
                         </td>
                         <td class="px-6 py-4 text-purple-800 text-sm font-semibold flex space-x-2">
                             <!-- Botón de editar con icono SVG -->

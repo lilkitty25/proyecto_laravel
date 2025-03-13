@@ -16,7 +16,11 @@ class AlumnoController extends Controller
         $columns = Schema::getColumnListing("alumnos");
         $exclude = ["created_at", "updated_at"];
         $columns = array_diff($columns, $exclude);
-        $alumnos = Alumno::with('idiomas')->select($columns)->get();
+        
+        // Cargar los alumnos con sus idiomas usando eager loading
+        $alumnos = Alumno::with(['idiomas' => function($query) {
+            $query->select('id', 'alumno_id', 'idioma', 'nivel', 'titulo');
+        }])->get();
 
         return view('alumnos.index', compact('alumnos', 'columns'));
     }
@@ -34,36 +38,35 @@ class AlumnoController extends Controller
      */
     public function store(StoreAlumnoRequest $request)
     {
+        try {
+            // Crear el alumno con los datos básicos
+            $alumno = Alumno::create([
+                'nombre' => $request->nombre,
+                'email' => $request->email,
+                'dni' => $request->dni
+            ]);
 
-
-        DB::transaction(function () use ($request) {
-
-            $data = $request->only('nombre', 'email', 'dni');
-
-            $alumno= new Alumno($data);
-            
-
-
-            $alumno->save();
-
-            $alumno = Alumno::create($data);
-
-
+            // Si hay idiomas seleccionados, los procesamos
             if ($request->has('idiomas')) {
-                $idiomas = collect($request->input('idiomas'));
-                $idiomas->each(function ($idioma) use ($alumno, $request) {
+                foreach ($request->idiomas as $idioma) {
                     $alumno->idiomas()->create([
-                        "idioma" => $idioma,
-                        "nivel" => $request->input("nivel")[$idioma],
-                        "titulo" => $request->input("titulo")[$idioma],
+                        'idioma' => $idioma,
+                        'nivel' => $request->input("nivel.$idioma"),
+                        'titulo' => $request->input("titulo.$idioma")
                     ]);
-                });
+                }
             }
 
-            session()->flash('mensaje', 'Alumno creado');
-        });
+            return redirect()
+                ->route('alumnos.index')
+                ->with('success', 'Alumno creado correctamente');
 
-        return redirect()->route('alumnos.index');
+        } catch (\Exception $e) {
+            \Log::error('Error al crear alumno: ' . $e->getMessage());
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'Error al crear el alumno. Por favor, inténtalo de nuevo.']);
+        }
     }
 
     /**
@@ -79,7 +82,7 @@ class AlumnoController extends Controller
      */
     public function edit(Alumno $alumno)
     {
-        $idiomas_disponibles = ['Inglés', 'Francés', 'Alemán', 'Italiano', 'Portugués', 'Chino'];
+        $idiomas_disponibles = config('idiomas');
         $niveles = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
         return view('alumnos.edit', compact('alumno', 'idiomas_disponibles', 'niveles'));
     }
@@ -92,39 +95,33 @@ class AlumnoController extends Controller
         try {
             DB::transaction(function () use ($request, $alumno) {
                 // Actualizar datos básicos del alumno
-                $alumno->update($request->only(['nombre', 'email', 'dni']));
+                $alumno->fill($request->only(['nombre', 'email', 'dni']));
+                $alumno->save();
 
-                // Manejar idiomas
+                // Eliminar todos los idiomas actuales
+                $alumno->idiomas()->delete();
+
+                // Procesar los idiomas seleccionados
                 if ($request->has('idiomas')) {
-                    // Obtener los idiomas actuales y nuevos
-                    $idiomas = $request->input('idiomas', []);
-                    
-                    // Eliminar idiomas que ya no están en la lista
-                    $alumno->idiomas()->whereNotIn('idioma', $idiomas)->delete();
-
-                    // Actualizar o crear idiomas
-                    foreach ($idiomas as $idioma) {
-                        $alumno->idiomas()->updateOrCreate(
-                            ['idioma' => $idioma],
-                            [
-                                'nivel' => $request->input("nivel.{$idioma}"),
-                                'titulo' => $request->input("titulo.{$idioma}")
-                            ]
-                        );
+                    foreach ($request->idiomas as $idioma) {
+                        // Solo crear si hay un nivel seleccionado
+                        if ($request->input("nivel.$idioma")) {
+                            $alumno->idiomas()->create([
+                                'idioma' => $idioma,
+                                'nivel' => $request->input("nivel.$idioma"),
+                                'titulo' => $request->input("titulo.$idioma")
+                            ]);
+                        }
                     }
-                } else {
-                    // Si no hay idiomas seleccionados, eliminar todos
-                    $alumno->idiomas()->delete();
                 }
-
-                session()->flash('mensaje', 'Alumno actualizado correctamente');
             });
 
-            return redirect()->route('alumnos.index');
+            return redirect()
+                ->route('alumnos.index')
+                ->with('success', 'Alumno actualizado correctamente');
+
         } catch (\Exception $e) {
-            // Log del error para debugging
             \Log::error('Error actualizando alumno: ' . $e->getMessage());
-            
             return back()
                 ->withInput()
                 ->withErrors(['error' => 'Error al actualizar el alumno. Por favor, inténtalo de nuevo.']);

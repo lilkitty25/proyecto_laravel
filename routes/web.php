@@ -5,26 +5,33 @@ use App\Http\Controllers\AlumnoController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\LanguageController;
+use App\Models\Alumno;
+use App\Models\Proyecto;
 
 Route::get('/', function () {
-    return view('main');
-});
+    if (Auth::check()) {
+        $totalAlumnos = Alumno::count();
+        $totalProyectos = Proyecto::count();
+        return view('home', compact('totalAlumnos', 'totalProyectos'));
+    }
+    return view('welcome');
+})->name('home');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $totalAlumnos = \App\Models\Alumno::count();
+    $totalProyectos = \App\Models\Proyecto::count();
+    return view('home', compact('totalAlumnos', 'totalProyectos'));
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::view('/about', 'about')->name('about');
+Route::view('/news', 'news')->name('news');
+Route::view('/contact', 'contact')->name('contact');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-// Add this route to your routes/web.php
-Route::get('/home', function () {
-    return redirect()->route('dashboard'); // Redirects to the dashboard
-})->name('home');
-
 
 // Ruta para alumnos
 Route::get('/alumnos', [AlumnoController::class, 'index'])->name('alumnos');

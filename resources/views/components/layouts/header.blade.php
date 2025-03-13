@@ -1,8 +1,10 @@
 <header class="bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg p-4">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
         <!-- Logo -->
-        <img class="h-12 md:h-16 rounded-full transition-all duration-300 transform hover:scale-105"
-             src="{{ asset('img/logo1.png') }}" alt="logo">
+        <a href="{{ route('home') }}" class="block h-12 md:h-16 rounded-full transition-all duration-300 transform hover:scale-105 hover:opacity-80">
+            <img class="h-full w-auto rounded-full"
+                 src="{{ asset('img/logo1.png') }}" alt="logo">
+        </a>
 
         <!-- Título (visible solo en pantallas grandes) -->
         <h1 class="text-4xl font-semibold text-white hover:text-gray-300 transition-all duration-300 hidden md:block">
